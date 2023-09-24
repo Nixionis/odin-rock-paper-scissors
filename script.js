@@ -1,3 +1,6 @@
+let playerWins = 0;
+let computerWins = 0;
+
 function getComputerChoice() {
     switch (Math.floor(Math.random() * 3)) {
         case 0:
@@ -27,26 +30,35 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function game() {
-    let playerWins = 0;
-    let computerWins = 0;
+function game(playerSelection) {
 
-    for (let i = 0; i < 5; i++) {
-        const playerSelection = prompt('Your next move?');
-        const computerSelection = getComputerChoice();
+    const computerSelection = getComputerChoice();
 
-        const result = playRound(playerSelection, computerSelection);
+    const result = playRound(playerSelection, computerSelection);
 
-        if (result === 'Win') playerWins++;
-        else if (result === 'Lose') computerWins++;
+    if (result === 'Win') playerWins++;
+    else if (result === 'Lose') computerWins++;
 
-        if (result === 'Tie') {
-            console.log('Tie!');
-            continue;
-        }
-
-        console.log(`You ${result}! ${(result === 'Win') ? playerSelection : computerSelection} beats ${(result === 'Win') ? computerSelection : playerSelection}`);
+    if (result === 'Tie') {
+        console.log('Tie!');
     }
+
+    //console.log(`You ${result}! ${(result === 'Win') ? playerSelection : computerSelection} beats ${(result === 'Win') ? computerSelection : playerSelection}`);
+    scoreText.textContent = `You ${playerWins} : ${computerWins} Computer`;
+    resultText.textContent = (result === 'Tie') ? `${result}!` : `You ${result}!`;
+
+    if (playerWins >= 5 || computerWins >= 5)
+        winnerText.textContent = (playerWins >= 5) ? `Player won!` : `Computer won!`;
 }
 
-game();
+const rockButton = document.querySelector('#btn-rock');
+const paperButton = document.querySelector('#btn-paper');
+const scissorsButton = document.querySelector('#btn-scissors');
+
+const scoreText = document.querySelector('#score-text');
+const resultText = document.querySelector('#result-text');
+const winnerText = document.querySelector('#winner-text');
+
+rockButton.addEventListener('click', () => game('rock'));
+paperButton.addEventListener('click', () => game('paper'));
+scissorsButton.addEventListener('click', () => game('scissors'));
